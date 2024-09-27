@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
-import { FontAwesome } from 'react-native-vector-icons/FontAwesome'
+import { FontAwesome } from 'react-native-vector-icons/FontAwesome';
 
 const TextField = ({ placeholder, value, onChangeText, iconName, iconSize = 24, iconColor = '#000', secureTextEntry }) => {
   return (
