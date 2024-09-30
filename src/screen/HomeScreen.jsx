@@ -1,11 +1,11 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Image } from 'react-native';
 
 
 const HomeScreen = () => {
   return (
     <View>
-      <Text>HomeScreen</Text>
+      <Image source={require("../assests/teck1.png")}/>
     </View>
   )
 }
