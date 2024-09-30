@@ -8,11 +8,16 @@ import {
   Dimensions,
 } from 'react-native';
 import CustomButton from '../components/CustomButton';
+import { useNavigation } from '@react-navigation/native';
 
 // Get device width and height for responsive styling
-const { width, height } = Dimensions.get('window');
+const {width, height} = Dimensions.get('window');
 
 const HomeScreen = () => {
+  const navigation =useNavigation();
+  const handlesignup=()=>{
+    navigation.navigate('signup');
+  }
   return (
     <ImageBackground
       source={require('../assets/welcom2.jpg')}
@@ -20,11 +25,11 @@ const HomeScreen = () => {
       <View style={styles.mainContainer}>
         <Image source={require('../assets/teck2.png')} style={styles.logo} />
         <Text style={styles.title}>Welcome to NewTek</Text>
-        
+
         <View style={styles.buttonContainer}>
           <CustomButton
             title="Let Start"
-            onPress={() => console.log('Login pressed')}
+            onPress={handlesignup}
             backgroundColor="#FF8C00"
             textColor="#fff"
             width={300}
@@ -56,7 +61,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingBottom: 100, 
+    paddingBottom: 100,
   },
   title: {
     fontSize: 25,
