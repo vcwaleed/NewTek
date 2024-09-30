@@ -73,6 +73,6 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     position: 'absolute',
-    bottom: 170, // This will push the button near the bottom
+    bottom: 100, // This will push the button near the bottom
   },
 });

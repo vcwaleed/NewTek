@@ -1,12 +1,14 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import {View, Text, TouchableOpacity} from 'react-native';
+import React from 'react';
 
 const SignupScreen = () => {
   return (
     <View>
-      <Text>SignupScreen</Text>
+      <TouchableOpacity>
+        <Text>Hi</Text>
+      </TouchableOpacity>
     </View>
-  )
-}
+  );
+};
 
-export default SignupScreen
+export default SignupScreen;
