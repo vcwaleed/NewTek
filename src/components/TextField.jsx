@@ -1,13 +1,36 @@
+import React, {useRef} from 'react';
+import {View, TextInput, StyleSheet} from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import React from 'react';
-import { View, TextInput, StyleSheet } from 'react-native';
-import { FontAwesome } from 'react-native-vector-icons/FontAwesome';
+const TextField = ({
+  placeholder,
+  value,
+  onChangeText,
+  iconName,
+  iconSize = 24,
+  iconColor = '#000',
+  secureTextEntry,
+}) => {
+  const inputRef = useRef(null);
 
-const TextField = ({ placeholder, value, onChangeText, iconName, iconSize = 24, iconColor = '#000', secureTextEntry }) => {
+  const handleFocus = () => {
+    inputRef.current.focus();
+    inputRef.current.setNativeProps({borderColor: 'blue'});
+  };
+
+  const handleBlur = () => {
+    inputRef.current.setNativeProps({borderColor: '#ccc'});
+  };
+
   return (
     <View style={styles.container}>
       {iconName && (
-        <FontAwesome name={iconName} size={iconSize} color={iconColor} style={styles.icon} />
+        <Ionicons
+          name={iconName}
+          size={iconSize}
+          color={iconColor}
+          style={styles.icon}
+        />
       )}
       <TextInput
         style={styles.input}
@@ -15,6 +38,9 @@ const TextField = ({ placeholder, value, onChangeText, iconName, iconSize = 24, 
         value={value}
         onChangeText={onChangeText}
         secureTextEntry={secureTextEntry}
+        ref={inputRef}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
       />
     </View>
   );
@@ -26,10 +52,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderColor: '#ccc',
     borderWidth: 1,
-    borderRadius: 8,
+    borderRadius: 10,
     padding: 10,
     marginVertical: 10,
+    width: '95%',
+    marginLeft: '2.5%',
   },
+
   icon: {
     marginRight: 10,
   },

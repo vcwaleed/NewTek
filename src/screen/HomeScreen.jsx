@@ -28,7 +28,7 @@ const HomeScreen = () => {
 
         <View style={styles.buttonContainer}>
           <CustomButton
-            title="Let Start"
+            title="Let's Start"
             onPress={handlesignup}
             backgroundColor="#FF8C00"
             textColor="#fff"
