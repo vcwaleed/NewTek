@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     width: 160,
     height: 160,
     resizeMode: 'contain',
-    marginTop: -300,
+    marginTop: -230,
     marginLeft: 30,
   },
   mainContainer: {

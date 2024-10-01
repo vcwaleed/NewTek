@@ -11,12 +11,11 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import TextField from '../components/TextField';
 import CustomButton from '../components/CustomButton';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 
 const {width, height} = Dimensions.get('window');
 
-const LoginScreen = () => {
-  const [email, setEmail] = useState('');
+const VerificationScreen = () => {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false); // State to track loading animation
 
@@ -27,10 +26,12 @@ const LoginScreen = () => {
   });
 
   const navigation = useNavigation();
+  const route = useRoute();
+  const email = route.params?.email || '';
   const handlesignup1 = () => {
     navigation.navigate('signup');
   };
-  const handleForgotPassword = () => {
+  const handleEmailChange = () => {
     navigation.navigate('forgotPassword');
   };
   const handleSignup = () => {
@@ -41,7 +42,7 @@ const LoginScreen = () => {
     setTimeout(() => {
       setIsLoading(false); // Stop loading animation after delay
 
-      navigation.navigate('login'); // Navigate to login after delay
+      navigation.navigate('SetNewPassword'); // Navigate to login after delay
     }, 2000); // 2-second delay
   };
 
@@ -58,10 +59,8 @@ const LoginScreen = () => {
 
       {/* heading field of text */}
       <View>
-        <Text style={Style.heading}>Login here</Text>
-        <Text style={Style.subheading}>
-        Welcome 
-        </Text>
+        <Text style={Style.heading}>Verification</Text>
+        <Text style={Style.subheading}>Pin is send to your email</Text>
       </View>
 
       {/* input fields */}
@@ -70,14 +69,16 @@ const LoginScreen = () => {
         <TextField
           placeholder={'ENTER YOUR EMAIL'}
           value={email}
-          onChangeText={setEmail}
           iconName="mail"
           iconSize={24}
           iconColor="#000"
         />
+         <TouchableOpacity onPress={handleEmailChange}>
+          <Text style={Style.forgot_text}>Change Email?</Text>
+        </TouchableOpacity>
         {/* Password Field with Lock Icon */}
         <TextField
-          placeholder={'ENTER YOUR PASSWORD'}
+          placeholder={'ENTER YOUR 6 digit pin '}
           secureTextEntry={true}
           value={password}
           onChangeText={setPassword}
@@ -85,16 +86,13 @@ const LoginScreen = () => {
           iconSize={24}
           iconColor="#000"
         />
-        <TouchableOpacity onPress={handleForgotPassword}>
-          <Text style={Style.forgot_text}>Forgot Password?</Text>
-        </TouchableOpacity>
-      
+
         <View style={Style.bnt}>
           {isLoading ? ( // Show loading spinner when isLoading is true
             <ActivityIndicator size="large" color="#FF8C00" />
           ) : (
             <CustomButton
-              title="Login"
+              title="Continue "
               onPress={handleSignup}
               backgroundColor="#FF8C00"
               textColor="#fff"
@@ -106,7 +104,7 @@ const LoginScreen = () => {
 
       <View>
         <Text style={Style.textup}>
-          Create  account
+          Create account
           <TouchableOpacity onPress={handlesignup1} style={Style.textup}>
             <Text style={Style.bottom_text}> Sign up</Text>
           </TouchableOpacity>
@@ -159,7 +157,7 @@ const LoginScreen = () => {
   );
 };
 
-export default LoginScreen;
+export default VerificationScreen;
 
 const Style = StyleSheet.create({
   container: {
@@ -230,11 +228,11 @@ const Style = StyleSheet.create({
     justifyContent: 'center',
     alignContent: 'center',
   },
-  forgot_text:{
+  forgot_text: {
     color: 'blue',
     marginTop: 3,
     marginBottom: 9,
     fontSize: 16,
-   textAlign: 'right'
-  }
+    textAlign: 'right',
+  },
 });
