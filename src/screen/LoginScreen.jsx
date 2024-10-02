@@ -7,6 +7,7 @@ import {
   ScrollView,
   Dimensions,
   ActivityIndicator,
+  Modal,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import TextField from '../components/TextField';
@@ -19,7 +20,9 @@ const LoginScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false); // State to track loading animation
-
+  const [emailError, setEmailError] = useState(''); // State for email error message
+  const [passwordError, setPasswordError] = useState(''); // State for password error message
+  const [showRequiredFieldsModal, setShowRequiredFieldsModal] = useState(false); // State to control modal visibility
   const [iconHover, setIconHover] = useState({
     mail: false,
     facebook: false,
@@ -34,19 +37,48 @@ const LoginScreen = () => {
     navigation.navigate('forgotPassword');
   };
   const handleSignup = () => {
-    // Show loading animation
-    setIsLoading(true);
+    // Validate email and password
+    const isEmailValid = validateEmail(email);
+    const isPasswordValid = validatePassword(password);
 
-    // Simulate signup process delay
-    setTimeout(() => {
-      setIsLoading(false); // Stop loading animation after delay
+    if (!isEmailValid) {
+      setEmailError('Please enter a valid email address.');
+    } else {
+      setEmailError('');
+    }
 
-      navigation.navigate('login'); // Navigate to login after delay
-    }, 2000); // 2-second delay
+    if (!isPasswordValid) {
+      setPasswordError('Password must be at least 8 characters long.');
+    
+    } else {
+      setPasswordError('');
+    }
+
+    if (isEmailValid && isPasswordValid) {
+      // Show loading animation
+      setIsLoading(true);
+
+      // Simulate signup process delay
+      setTimeout(() => {
+        setIsLoading(false); // Stop loading animation after delay
+
+        navigation.navigate('MainBody'); // Navigate to login after delay
+      }, 2000); // 2-second delay
+    }
   };
 
   const handleGoBack = () => {
     navigation.goBack(); // Go back to the previous screen
+  };
+
+  // Validation functions
+  const validateEmail = email => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const validatePassword = password => {
+    return password.length >= 8;
   };
 
   return (
@@ -59,9 +91,7 @@ const LoginScreen = () => {
       {/* heading field of text */}
       <View>
         <Text style={Style.heading}>Login here</Text>
-        <Text style={Style.subheading}>
-        Welcome 
-        </Text>
+        <Text style={Style.subheading}>Welcome</Text>
       </View>
 
       {/* input fields */}
@@ -74,6 +104,7 @@ const LoginScreen = () => {
           iconName="mail"
           iconSize={24}
           iconColor="#000"
+          error={emailError}
         />
         {/* Password Field with Lock Icon */}
         <TextField
@@ -84,11 +115,12 @@ const LoginScreen = () => {
           iconName="lock-closed"
           iconSize={24}
           iconColor="#000"
+          error={passwordError}
         />
         <TouchableOpacity onPress={handleForgotPassword}>
           <Text style={Style.forgot_text}>Forgot Password?</Text>
         </TouchableOpacity>
-      
+
         <View style={Style.bnt}>
           {isLoading ? ( // Show loading spinner when isLoading is true
             <ActivityIndicator size="large" color="#FF8C00" />
@@ -106,7 +138,7 @@ const LoginScreen = () => {
 
       <View>
         <Text style={Style.textup}>
-          Create  account
+          Create account
           <TouchableOpacity onPress={handlesignup1} style={Style.textup}>
             <Text style={Style.bottom_text}> Sign up</Text>
           </TouchableOpacity>
@@ -155,6 +187,25 @@ const LoginScreen = () => {
           <Ionicons name="logo-twitter" size={27} />
         </TouchableOpacity>
       </View>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={showRequiredFieldsModal}
+        onRequestClose={() => setShowRequiredFieldsModal(false)}
+      >
+        <View style={Style.modalContainer}>
+          <View style={Style.modalContent}>
+            <Text style={Style.modalText}>Please fill in all required fields.</Text>
+            <TouchableOpacity
+              style={Style.modalButton}
+              onPress={() => setShowRequiredFieldsModal(false)}
+            >
+              <Text style={Style.modalButtonText}>OK</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </ScrollView>
   );
 };
@@ -230,11 +281,41 @@ const Style = StyleSheet.create({
     justifyContent: 'center',
     alignContent: 'center',
   },
-  forgot_text:{
+  forgot_text: {
     color: 'blue',
     marginTop: 3,
     marginBottom: 9,
     fontSize: 16,
-   textAlign: 'right'
-  }
+    textAlign: 'right',
+  },
+  errorText: {
+    color: 'red',
+    fontSize: 14,
+    marginBottom: 10,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+  },
+  modalText: {
+    fontSize: 16,
+    textAlign: 'center',
+    marginBottom: 10,
+  },
+  modalButton: {
+    backgroundColor: '#FF8C00',
+    padding: 10,
+    borderRadius: 5,
+  },
+  modalButtonText: {
+    color: 'white',
+    textAlign: 'center',
+  },
 });
